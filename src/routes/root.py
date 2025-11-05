@@ -3,7 +3,7 @@ from starlette.requests import Request
 from starlette.responses import HTMLResponse, PlainTextResponse
 from fastmcp import FastMCP
 
-def register_routes(mcp: FastMCP):
+def register(mcp: FastMCP):
     @mcp.custom_route("/", methods=["GET"])
     async def root(request: Request) -> HTMLResponse:
         html = """
