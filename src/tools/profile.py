@@ -1,6 +1,6 @@
 # src/tools/profile.py
 from fastmcp import FastMCP
-from data.memory import profiles_data
+from repository.memory import profiles_data
 
 def register_profile_tools(mcp: FastMCP):
     @mcp.tool()
