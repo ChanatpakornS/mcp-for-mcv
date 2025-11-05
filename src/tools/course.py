@@ -1,6 +1,6 @@
 # src/tools/course.py
 from fastmcp import FastMCP
-from data.memory import departments_data, courses_data
+from repository.memory import departments_data, courses_data
 
 def register_course_tools(mcp: FastMCP):
     @mcp.tool()
