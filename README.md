@@ -25,41 +25,7 @@ It provides tools for fetching course data, student profiles, and department inf
 
 ## Installation
 
-1. Ensure you have **Python 3.10+** installed.
-2. Install required packages and initialize the environment:
-
-   ```bash
-   pip install uv
-   ```
-
-## Usage
-
-Start the server with:
-
-```bash
-uv run src/server.py
-```
-
-The server will run at [http://127.0.0.1:8001](http://127.0.0.1:8000).
-
-## Project Structure
-
-```
-mcp-for-mcv/
-├── src/
-│   ├── server.py
-│   ├── tools/
-│   └── routes/
-├── README.md
-└── ...
-```
-
-## Contributing
-
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
----
-
+TODO
 ## License
 
 This project is for educational purposes.
