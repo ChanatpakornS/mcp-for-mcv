@@ -21,13 +21,7 @@ Example:
 
 from __future__ import annotations
 
-import time
-
 import httpx
-from key_value.aio.protocols import AsyncKeyValue
-from pydantic import AnyHttpUrl, SecretStr, field_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
-
 from fastmcp.server.auth import TokenVerifier
 from fastmcp.server.auth.auth import AccessToken
 from fastmcp.server.auth.oauth_proxy import OAuthProxy
@@ -35,9 +29,12 @@ from fastmcp.settings import ENV_FILE
 from fastmcp.utilities.auth import parse_scopes
 from fastmcp.utilities.logging import get_logger
 from fastmcp.utilities.types import NotSet, NotSetT
-from dataclasses import dataclass
+from key_value.aio.protocols import AsyncKeyValue
+from pydantic import AnyHttpUrl, SecretStr, field_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 logger = get_logger(__name__)
+
 
 class mcvProviderSettings(BaseSettings):
     """Settings for mcv OAuth provider."""
@@ -236,22 +233,28 @@ class MCVProvider(OAuthProxy):
         )
 
         # Initialize OAuth proxy with mcv endpoints
+        # MyCourseVille supports standard OIDC scopes: openid, email, profile
+        valid_scopes_final = settings.required_scopes or []
+
         super().__init__(
             upstream_authorization_endpoint="https://www.mycourseville.com/api/oauth/authorize",
             upstream_token_endpoint="https://www.mycourseville.com/api/oauth/access_token",
             upstream_client_id=settings.client_id,
             upstream_client_secret=client_secret_str,
+            valid_scopes=valid_scopes_final,
             token_verifier=token_verifier,
             base_url=settings.base_url,
             redirect_path=settings.redirect_path,
-            issuer_url=settings.issuer_url or settings.base_url,  # Default to base_url if not specified
+            issuer_url=settings.issuer_url
+            or settings.base_url,  # Default to base_url if not specified
             allowed_client_redirect_uris=allowed_client_redirect_uris_final,
             client_storage=client_storage,
             jwt_signing_key=settings.jwt_signing_key,
             require_authorization_consent=require_authorization_consent,
         )
-    
+
         logger.debug(
             "Initialized mcv OAuth provider for client %s with scopes: %s",
             settings.client_id,
+            valid_scopes_final,
         )
